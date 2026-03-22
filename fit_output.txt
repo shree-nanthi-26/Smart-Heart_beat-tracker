@@ -1,0 +1,28 @@
+Checking Google Fit data sources...
+
+Available data sources:
+==================================================
+
+1. Unnamed
+   Type: com.google.heart_rate.bpm
+   Device: Unknown
+
+2. Unnamed
+   Type: com.google.heart_rate.bpm
+   Device: Unknown
+
+3. Unnamed
+   Type: com.google.heart_rate.bpm
+   Device: Unknown
+
+4. Unnamed
+   Type: com.google.heart_rate.bpm
+   Device: Unknown
+
+5. Unnamed
+   Type: com.google.heart_rate.bpm
+   Device: Unknown
+
+==================================================
+
+Press Enter to exit...
