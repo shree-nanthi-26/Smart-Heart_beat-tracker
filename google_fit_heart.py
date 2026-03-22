@@ -138,8 +138,33 @@ def authenticate():
                 creds = None
         
         if not creds:
+            # Try to use environment variables for client configuration
+            client_id = os.getenv("GOOGLE_FIT_CLIENT_ID")
+            client_secret = os.getenv("GOOGLE_FIT_CLIENT_SECRET")
+            
+            if client_id and client_secret:
+                try:
+                    client_config = {
+                        "installed": {
+                            "client_id": client_id,
+                            "client_secret": client_secret,
+                            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                            "token_uri": "https://oauth2.googleapis.com/token",
+                            "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+                            "redirect_uris": ["http://localhost"]
+                        }
+                    }
+                    flow = InstalledAppFlow.from_client_config(client_config, Config.SCOPES)
+                    creds = flow.run_local_server(port=0)
+                    with open(Config.TOKEN_FILE, 'w') as token:
+                        token.write(creds.to_json())
+                    return creds
+                except Exception as e:
+                    logger.error(f"Authentication with env vars failed: {e}")
+            
+            # Fallback to client secret file
             if not os.path.exists(Config.CLIENT_SECRET_FILE):
-                logger.error(f"Client secret file not found: {Config.CLIENT_SECRET_FILE}")
+                logger.error(f"Client secret file not found: {Config.CLIENT_SECRET_FILE} and environment variables are missing.")
                 return None
                 
             try:
